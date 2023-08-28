@@ -32,9 +32,10 @@ function renderHistory(){
     historyList.innerHTML = "";
     for (let history of historyData){
         let row = document.createElement("tr");
-        row.innerHTML+="<td>"+ history.firstNumber + "</td>";
+        const result = history.secondNumber.split(/([+\-*/])/);
+        row.innerHTML+="<td>"+ result[0] + "</td>";
         row.innerHTML+="<td>"+ history.operator + "</td>";
-        row.innerHTML+="<td>"+ history.secondNumber + "</td>";
+        row.innerHTML+="<td>"+ result[2] + "</td>";
         row.innerHTML+="<td>"+ history.result + "</td>";
         historyList.appendChild(row);
     }

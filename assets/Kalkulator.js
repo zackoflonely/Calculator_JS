@@ -24,8 +24,7 @@ function resetOperator(){
 function inputDigit(digit){
     if (calculator.displayNumber === "0"){
         calculator.displayNumber=digit;
-    }
-    else{
+    }else{
         calculator.displayNumber += digit;
     }
 }
@@ -44,10 +43,6 @@ function handleOperator(operator){
         calculator.operator = operator;
         calculator.isWaitForSecondNumber = true;
         calculator.firstNumber = calculator.displayNumber;
-        calculator.displayNumber = "0";
-    }
-    else{
-        alert("Operator sudah dipakai")
     }
 }
 
@@ -57,13 +52,44 @@ function performCalculation(){
         return;
     }
     let hasil = 0;
-    if (calculator.operator === "+"){
-        hasil = parseInt(calculator.firstNumber)+parseInt(calculator.displayNumber);
+    if (calculator.operator) {
+        console.log(calculator.firstNumber);
+        console.log(calculator.displayNumber);
+        const result = calculator.displayNumber.split(/([+\-*/])/);
+        let total = parseInt(result[0]);
+        let operator = null;
+    
+        for (let i = 1; i < result.length; i++) {
+            console.log("iterasi ke " + i);
+            if (i % 2 !== 0) {
+                console.log(result[i]);
+                operator = result[i];
+            } else {
+                const number = parseInt(result[i]);
+                switch (operator) {
+                    case "+":
+                        total += number;
+                        break;
+                        case "-":
+                            total -= number;
+                            break;
+                            case "*":
+                                total *= number;
+                                break;
+                                case "/":
+                        if (number !== 0) {
+                            total /= number;
+                        } else {
+                            alert("Division by zero!");
+                        }
+                        break;
+                        default:
+                            console.error("Unknown operator: " + operator);
+                        }
+                    }
+                }
+        hasil = total;
     }
-    if (calculator.operator === "-"){
-        hasil = parseInt(calculator.firstNumber)-parseInt(calculator.displayNumber);
-    }
-
     const history = {
         firstNumber : calculator.firstNumber,
         secondNumber : calculator.displayNumber,
@@ -98,6 +124,8 @@ for (const button of buttons){
         }
 
         if (target.classList.contains("operator")){
+            inputDigit(target.innerText);
+            updateDisplay();
             handleOperator(target.innerText);
             return;
         }
